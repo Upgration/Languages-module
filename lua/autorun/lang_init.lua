@@ -13,4 +13,4 @@ function LANG.LoadDirectory(dir)
     end
 end
 LANG.LoadDirectory("lang")
-ErrorNoHalt("__Loaded__ LANG.")
+print("__Loaded__ LANG.")
