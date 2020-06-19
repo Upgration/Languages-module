@@ -1,11 +1,16 @@
---[[
-Written with Lua++.
-Don't remove this notice please
-
-https://github.com/LuaPlusPlus/lua-plus-plus
-]]--
-include('lang.lua')
-AddCSLuaFile('lang.lua')
-
-include('promises.lua')
-AddCSLuaFile('promises.lua')
+LANG = {}
+function LANG.LoadDirectory(dir)
+    local fil, fol = file.Find(dir .. "/*", "LUA")
+    for k,v in pairs(fol) do
+        LANG.LoadDirectory(dir .. "/" .. v)
+    end
+    for k,v in ipairs(fil) do
+        if v:EndsWith(".lpp") then continue end
+        local dirs = dir .. "/" .. v
+        -- Everything is shared in this project.
+        AddCSLuaFile(dirs)
+        include(dirs)
+    end
+end
+LANG.LoadDirectory("lang")
+print("__Loaded__ LANG.")
