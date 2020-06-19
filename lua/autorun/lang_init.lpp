@@ -1,2 +1,0 @@
-include('lang.lua')
-AddCSLuaFile('lang.lua')
