@@ -108,7 +108,7 @@ hook.Add('InitializeLanguage', 'teststest', function()
     print('tseting this shit from tom')
 end)
 hook.Add('Language::Prepare', 'TestLanguage', function()
-    local l = LANG.new('s') -- this is a fix for now
+    local l = LANG.Lang.new('s') -- this is a fix for now
     l:setLang('english')
     l:setTeam('XeNiN')
     l:setAddon('BaTtLePaSs')
