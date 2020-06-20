@@ -72,7 +72,12 @@ function LANG.Lang:GetPhrase(phrase, fallback)
         return res
     end
 function LANG.Lang:Transfer(tbl, lang)
-        file.Write(lang..'.txt', utf8.char( utf8.codepoint( util.TableToJSON(tbl, true), 1, string.len( util.TableToJSON( tbl, true) ) ) ) )
+        local lt = {}
+        lt['phrases'] = {}
+        for k, v in pairs(tbl) do
+            lt['phrases'][k] =  utf8.char( utf8.codepoint(v, 1, string.len(v) ) ) 
+        end
+        file.Write(lang..'.txt', util.TableToJSON(lt, true))
     end
 function LANG.Lang:getLang()
 	return self.lang
