@@ -100,3 +100,12 @@ function LANG:GetPhrase(phrase, fallback)
     end
     return res
 end
+
+function LANG:Transfer(tbl, lang)
+    local lt = {}
+    lt['phrases'] = {}
+    for k, v in pairs(tbl) do
+        lt['phrases'][k] =  utf8.char( utf8.codepoint(v, 1, string.len(v) ) ) 
+    end
+    file.Write(lang..'.txt', util.TableToJSON(lt, true))
+end
