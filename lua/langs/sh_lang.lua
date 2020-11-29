@@ -1,6 +1,6 @@
 LANG = LANG or {}
 LANG.__index = LANG
-function LANG:Init(s)
+function LANG:Init(lang, addon, team, callback)
 	local self = {}
 	setmetatable(self, LANG)
 
@@ -8,7 +8,21 @@ function LANG:Init(s)
         file.CreateDir('languages')
     end
 
+    self.Ready = false
     self.Lang = {}
+
+    self.lang = lang
+    self.addon = addon
+    self.team = team
+    self.callback = callback
+
+    hook.Add('Tick', 'LanguageReadyTick', function()
+        self:Download(self.callback,nil, 0)
+        print('download call')
+        hook.Remove('Tick', 'LanguageReadyTick')
+        print('removed')
+    end)
+
 	return self
 end
 
@@ -23,24 +37,12 @@ function LANG:getLang()
 	return self.lang
 end
 
-function LANG:setLang(obj)
-	self.lang = obj
-end
-
 function LANG:getAddon()
 	return self.addon
 end
 
-function LANG:setAddon(obj)
-	self.addon = obj
-end
-
 function LANG:getTeam()
 	return self.team
-end
-
-function LANG:setTeam(obj)
-	self.team = obj
 end
 
 local function fetch(url)
@@ -53,19 +55,23 @@ local function fetch(url)
     return d
 end
 
-
 function LANG:Download(callback, retry)
-
+    //print('called for download')
+    //print(string.lower(self:getTeam()),string.lower(self:getAddon()),string.lower(self:getLang()))
     local url = 'https://raw.githubusercontent.com/Upgration/Languages/master/lang/'..string.lower(self:getTeam())..'/'..string.lower(self:getAddon())..'/'..string.lower(self:getLang())..'.json'
-
+    //print(url)
     fetch(url)
         :next(function(body)
             local tbl = util.JSONToTable(body)
             if not tbl and retry == nil then
                 return self:Download(callback, true)
             elseif not tbl then
-                return print('Unable to decode JSON')
+                if #player.GetAll() > 0 && player.GetAll()[1]:IsValid() then
+                    return print('Unable to decode JSON')
+                end
+                return self:Download(callback)
             end
+            print(body)
 
             if not file.IsDir(self:Path(), 'DATA') then
                 file.CreateDir(self:Path())
