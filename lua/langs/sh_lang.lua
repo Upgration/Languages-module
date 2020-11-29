@@ -18,9 +18,7 @@ function LANG:Init(lang, addon, team, callback)
 
     hook.Add('Tick', 'LanguageReadyTick', function()
         self:Download(self.callback,nil, 0)
-        print('download call')
         hook.Remove('Tick', 'LanguageReadyTick')
-        print('removed')
     end)
 
 	return self
@@ -56,10 +54,8 @@ local function fetch(url)
 end
 
 function LANG:Download(callback, retry)
-    //print('called for download')
-    //print(string.lower(self:getTeam()),string.lower(self:getAddon()),string.lower(self:getLang()))
     local url = 'https://raw.githubusercontent.com/Upgration/Languages/master/lang/'..string.lower(self:getTeam())..'/'..string.lower(self:getAddon())..'/'..string.lower(self:getLang())..'.json'
-    //print(url)
+    
     fetch(url)
         :next(function(body)
             local tbl = util.JSONToTable(body)
@@ -68,7 +64,6 @@ function LANG:Download(callback, retry)
             elseif not tbl then
                 return print('Unable to decode JSON')
             end
-            print(body)
 
             if not file.IsDir(self:Path(), 'DATA') then
                 file.CreateDir(self:Path())
