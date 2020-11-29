@@ -1,4 +1,4 @@
-CURLANG = LANG:Init('english', 'f4menu', 'XeNiN',function() 
+CURLANG = LANG:Init('english', 'coinflip', 'XeNiN',function() 
     hook.Run('InitializeLanguage')
     print('gello')
 end)

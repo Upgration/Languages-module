@@ -66,10 +66,7 @@ function LANG:Download(callback, retry)
             if not tbl and retry == nil then
                 return self:Download(callback, true)
             elseif not tbl then
-                if #player.GetAll() > 0 && player.GetAll()[1]:IsValid() then
-                    return print('Unable to decode JSON')
-                end
-                return self:Download(callback)
+                return print('Unable to decode JSON')
             end
             print(body)
 
